@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    {{ form_start(registrationForm) }}
+
+    <twig:Card class="w-full max-w-sm">
+        <twig:Card:Header>
+            <twig:Card:Title>Créer un compte</twig:Card:Title>
+            <twig:Card:Description>
+                Entrer vos informations pour créer votre compte
+            </twig:Card:Description>
+        </twig:Card:Header>
+
+        <twig:Card:Content>
+            <div class="flex flex-col gap-6">
+                <div class="grid gap-2">
+                    <twig:Label :for="registrationForm.lastname.vars.id">Nom</twig:Label>
+                    <twig:Input
+                        :id="registrationForm.lastname.vars.id"
+                        :name="registrationForm.lastname.vars.full_name"
+                        :value="registrationForm.lastname.vars.value ?? ''"
+                        type="text"
+                        placeholder="Doe"
+                        :required="registrationForm.lastname.vars.required"
+                    />
+                    {{ form_errors(registrationForm.lastname) }}
+                </div>
+
+                <div class="grid gap-2">
+                    <twig:Label :for="registrationForm.firstname.vars.id">Prénom</twig:Label>
+                    <twig:Input
+                        :id="registrationForm.firstname.vars.id"
+                        :name="registrationForm.firstname.vars.full_name"
+                        :value="registrationForm.firstname.vars.value ?? ''"
+                        type="text"
+                        placeholder="John"
+                        :required="registrationForm.firstname.vars.required"
+                    />
+                    {{ form_errors(registrationForm.firstname) }}
+                </div>
+
+                <div class="grid gap-2">
+                    <twig:Label :for="registrationForm.email.vars.id">Email</twig:Label>
+                    <twig:Input
+                        :id="registrationForm.email.vars.id"
+                        :name="registrationForm.email.vars.full_name"
+                        :value="registrationForm.email.vars.value ?? ''"
+                        type="email"
+                        placeholder="john@example.com"
+                        :required="registrationForm.email.vars.required"
+                    />
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="grid gap-2">
+                    <twig:Label :for="registrationForm.roles.vars.id">Rôle</twig:Label>
+                    <select
+                        id="{{ registrationForm.roles.vars.id }}"
+                        name="{{ registrationForm.roles.vars.full_name }}"
+                        class="flex h-10 w-full rounded-md border px-3 py-2 text-sm"
+                        {% if registrationForm.roles.vars.required %}required{% endif %}
+                    >
+                        {% if registrationForm.roles.vars.placeholder is not same as(false) %}
+                            <option value="">
+                                {{ registrationForm.roles.vars.placeholder|default('Choisir un rôle') }}
+                            </option>
+                        {% endif %}
+
+                        {% for choice in registrationForm.accountType.vars.choices %}
+                            <option
+                                value="{{ choice.value }}"
+                                {% if choice.value == registrationForm.accountType.vars.value %}selected{% endif %}
+                            >
+                                {{ choice.label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    {{ form_errors(registrationForm.accountType) }}
+                </div>
+
+                <div class="grid gap-2">
+                    <twig:Label :for="registrationForm.plainPassword.vars.id">Mot de passe</twig:Label>
+                    <twig:Input
+                        :id="registrationForm.plainPassword.vars.id"
+                        :name="registrationForm.plainPassword.vars.full_name"
+                        value=""
+                        type="password"
+                        placeholder="Mot de passe"
+                        :required="registrationForm.plainPassword.vars.required"
+                    />
+                    {{ form_errors(registrationForm.plainPassword) }}
+
+                    <a href="#" class="mt-4 ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                        Mot de passe oublié ?
+                    </a>
+                </div>
+
+                <div class="grid gap-2">
+                    <div class="flex items-center gap-2">
+<twig:Checkbox
+    :id="registrationForm.agreeTerms.vars.id"
+    :name="registrationForm.agreeTerms.vars.full_name"
+    value="1"
+/>
+                        <twig:Label :for="registrationForm.agreeTerms.vars.id">
+                            Accepter les conditions générales d'utilisation
+                        </twig:Label>
+                    </div>
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                </div>
+            </div>
+        </twig:Card:Content>
+
+        <twig:Card:Footer class="flex-col gap-2">
+            <twig:Button type="submit" class="w-full">
+                S'inscrire
+            </twig:Button>
+        </twig:Card:Footer>
+    </twig:Card>
+
+    {{ form_rest(registrationForm) }}
+    {{ form_end(registrationForm, { render_rest: false }) }}
+{% endblock %}
