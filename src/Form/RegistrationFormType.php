@@ -22,13 +22,25 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('lastname', TextType::class, [
-                'label' => 'Nom'
+                'label' => 'Nom',
+                'attr' => [
+                    'id' => 'lastname',
+                    'placeholder' => 'Nom'
+                ]
             ])
             ->add('firstname', TextType::class, [
-                'label' => 'Prénom'
+                'label' => 'Prénom',
+                'attr' => [
+                    'id' => 'firstname',
+                    'placeholder' => 'Prénom'
+                ]
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email'
+                'label' => 'Email',
+                'attr' => [
+                    'id' => 'email',
+                    'placeholder' => 'Email'
+                ]
             ])
             ->add('roles', ChoiceType::class, [
                 'mapped' => false,
@@ -65,6 +77,9 @@ class RegistrationFormType extends AbstractType
                         max: 4096,
                     ),
                 ],
+            ])
+            ->add('save', SubmitType::class, [
+                'label' => 'S\'inscrire'
             ])
         ;
     }
